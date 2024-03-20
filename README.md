@@ -1,6 +1,7 @@
 # Patent Analytics Pipeline
 
 ## About the Project
+
 The Patent Analytics Pipeline is a comprehensive data engineering solution designed to ingest, process, and analyze US Patent Grants data. Utilizing a batch processing approach, this project aims to uncover trends and insights within the realm of US patents, facilitating a deeper understanding of technological innovations, sector growth, and temporal patterns in patent filings. Through the integration of technologies such as AWS, Terraform, Airflow, Apache Spark, and Snowflake, alongside visualization tools like Metabase, this pipeline offers a robust platform for data-driven decision-making and strategic planning.
 
 ### Project Overview
@@ -27,21 +28,23 @@ The patent-analytics-pipeline project aims to address several specific questions
 
 This pipeline also supports competitive analysis by extracting insights from patent data. It aims to answer questions like:
 
-  * Which technology areas are experiencing the most growth in patent activity?
-  * Are there cyclical patterns or seasonal shifts in patent filings?
-  * Which companies or inventors are driving innovation in specific fields?
-  * How does my company's patent portfolio compare to key competitors in terms of size and technology focus?
-  * Are there emerging players within our industry who are rapidly increasing their patent output?
-  * Can patent filings reveal potential new entrants or disruptors within our market?
+- Which technology areas are experiencing the most growth in patent activity?
+- Are there cyclical patterns or seasonal shifts in patent filings?
+- Which companies or inventors are driving innovation in specific fields?
+- How does my company's patent portfolio compare to key competitors in terms of size and technology focus?
+- Are there emerging players within our industry who are rapidly increasing their patent output?
+- Can patent filings reveal potential new entrants or disruptors within our market?
 
 The pipeline also enables an in-depth analysis of a specific technology area using patent data. It can help answer questions like:
-  * What are the key milestones and seminal patents within the field of Quantum Computing?
-  * Who are the top patent holders and influential inventors in Renewable Energy Technologies?
-  * Are there signs of maturity or potential disruption within Biotechnology and CRISPR based on patent trends?
+
+- What are the key milestones and seminal patents within the field of Quantum Computing?
+- Who are the top patent holders and influential inventors in Renewable Energy Technologies?
+- Are there signs of maturity or potential disruption within Biotechnology and CRISPR based on patent trends?
 
 By answering these questions, the patent-analytics-pipeline project intends to provide a comprehensive overview of the innovation landscape as reflected in patent filings, offering valuable insights for businesses, researchers, and policymakers to make informed decisions and strategize accordingly.
 
 ## Features
+
 - Weekly batch processing of US Patent Grants data from Snowflake
 - Data storage and cataloging with AWS S3 and Glue
 - Scalable data processing using Apache Spark on Amazon EMR
@@ -49,7 +52,9 @@ By answering these questions, the patent-analytics-pipeline project intends to p
 - Interactive dashboards and visualizations via Metabase
 
 ## Getting Started
+
 ### Prerequisites
+
 - AWS account
 - Terraform installed on your machine
 - Access to Snowflake
@@ -57,33 +62,43 @@ By answering these questions, the patent-analytics-pipeline project intends to p
 - Metabase setup (locally or on a server)
 
 ### Installation
+
 1. **Clone the repository**
+
    ```sh
    git clone https://github.com/chrisdamba/patent-analytics-pipeline.git
 
+   ```
+
 2. **Deployment**
-    * Clone this repository.
-    * Change directory to `/infra`
-    * In `variables.tf`, configure your AWS credentials and region.
-    * Run `terraform init`
-    * Run `terraform apply`
-3. **Data Exploration in Snowflake** 
-    * TODO: Brief guide for users on how to explore the dataset in Snowflake.
+   - Clone this repository.
+   - Set up your AWS environment. Configure your AWS CLI with aws configure. Ensure you have the necessary permissions for S3, Glue, Lambda, and EMR.
+   - Change directory to `/infra`
+   - Run `terraform init`
+   - Run `terraform apply`
+3. **Data Exploration in Snowflake**
+   - TODO: Brief guide for users on how to explore the dataset in Snowflake.
+
+
+
+### Configuration
+- **Airflow DAGs**: Configure your DAGs in Airflow for scheduling and orchestrating your ETL jobs.
+- **Spark Jobs**: Customize your Spark jobs according to the data processing requirements.
+- **Metabase Dashboards**: Set up your dashboards in Metabase for data visualization.
 
 **Dashboard**
 
-* The dashboard will be available at [https://mopinion.com/business-intelligence-bi-tools-overview/](https://mopinion.com/business-intelligence-bi-tools-overview/) [placeholder]
-* Sample visualizations include:
-    * Distribution of patents across technology categories
-    * Patent filing trends over time 
-
+- The dashboard will be available at [https://mopinion.com/business-intelligence-bi-tools-overview/](https://mopinion.com/business-intelligence-bi-tools-overview/) [placeholder]
+- Sample visualizations include:
+  - Distribution of patents across technology categories
+  - Patent filing trends over time
 
 **Customization**
 
-
-
 **Project Status**
 
+## Usage
+After completing the setup, you can run the pipeline by triggering the Airflow DAGs. This will initiate the process of data ingestion, processing, and loading into Snowflake, where it can be analyzed and visualized through Metabase.
 
-
-
+## License
+Distributed under the MIT License. See `LICENSE` for more information.
