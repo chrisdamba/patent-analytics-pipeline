@@ -1,6 +1,7 @@
 from airflow import DAG
-from airflow.contrib.hooks.snowflake_hook import SnowflakeHook
+from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
 from airflow.operators.python_operator import PythonOperator
+from datetime import datetime
 
 
 def incremental_load(ds, **kwargs):
@@ -23,11 +24,15 @@ def incremental_load(ds, **kwargs):
     # Step 3: Update the metadata table with the new last load date
     update_metadata_sql = f"""
         UPDATE staging_db.cybersyn.metadata
-        SET last_load_date = CURRENT_DATE()
+        SET last_load_date = CURRENT_DATE
         WHERE table_name = 'uspto_patent_index';
     """
     cursor.execute(update_metadata_sql)
     conn.commit()
+
+    cursor.close()
+    conn.close()
+
 
 with DAG(
         'incremental_load_uspto_patent_index',
@@ -43,4 +48,4 @@ with DAG(
         dag=dag,
     )
 
-    incremental_load_task
+incremental_load_task
