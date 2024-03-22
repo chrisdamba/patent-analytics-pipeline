@@ -59,6 +59,7 @@ resource "aws_nat_gateway" "patent_nat_gateway" {
 }
 
 resource "aws_internet_gateway" "patent_igw" {
+  count  = length(var.public_subnet_cidrs)
   vpc_id = aws_vpc.patent_vpc.id
 
   tags = {
@@ -67,23 +68,27 @@ resource "aws_internet_gateway" "patent_igw" {
 }
 
 resource "aws_route_table" "patent_public_rt" {
+  count  = 1
   vpc_id = aws_vpc.patent_vpc.id
-
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.patent_igw[0].id
+  }
   tags = {
-    Name = "patent_public_rt"
+    Name = "mwaa-${var.environment_name}-public-routes"
   }
 }
 
 resource "aws_route" "default_route" {
-  route_table_id         = aws_route_table.patent_public_rt.id
+  route_table_id         = aws_route_table.patent_public_rt[0].id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.patent_igw.id
+  gateway_id             = aws_internet_gateway.patent_igw[0].id
 }
 
 resource "aws_route_table_association" "patent_public_assoc" {
-  count  = length(var.public_subnet_cidrs)
+  count          = length(aws_subnet.public)
   subnet_id      = aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.patent_public_rt[count.index].id
+  route_table_id = aws_route_table.patent_public_rt[0].id
 }
 
 resource "aws_route_table" "patent_private_rt" {

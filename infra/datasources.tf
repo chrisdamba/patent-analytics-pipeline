@@ -118,7 +118,7 @@ data "aws_iam_policy_document" "mwaa_base" {
       "kms:GenerateDataKey*",
       "kms:Encrypt"
     ]
-    resources     = aws_kms_key.patent_kms_key.arn
+    resources     = [aws_kms_key.patent_kms_key.arn]
     not_resources = []
     condition {
       test = "StringLike"

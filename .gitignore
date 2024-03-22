@@ -4,3 +4,16 @@
 terraform.tfstate
 terraform.tfstate.backup
 authorized_key.json
+local-run-env-variable.sh
+.idea
+.git
+.env
+.DS_Store
+airflow_settings.yaml
+__pycache__/
+astro
+.venv
+airflow-webserver.pid
+webserver_config.py
+airflow.cfg
+airflow.db
