@@ -23,7 +23,6 @@ with DAG(
         start_date=days_ago(2),
         catchup=False
 ) as dag:
-
     create_staging_db = SnowflakeOperator(
         task_id='create_staging_db',
         snowflake_conn_id='snowflake_default',
@@ -43,6 +42,39 @@ with DAG(
             
             USE DATABASE staging_db;
             USE SCHEMA cybersyn;
+            
+            CREATE TABLE IF NOT EXISTS staging_db.cybersyn.metadata (
+                table_name VARCHAR(255),
+                last_load_date DATE
+            );
+            
+            INSERT INTO staging_db.cybersyn.metadata (table_name, last_load_date)
+                VALUES ('uspto_patent_index', '1976-01-01')
+                ON CONFLICT (table_name) DO NOTHING;
+        """
+    )
+
+    create_snowflake_stage = SnowflakeOperator(
+        task_id='create_snowflake_stage',
+        snowflake_conn_id='snowflake_default',
+        sql="""
+            CREATE OR REPLACE ROLE data_transfer_role;
+            CREATE SCHEMA IF NOT EXISTS stages;
+
+            GRANT USAGE ON SCHEMA staging_db.stages TO ROLE data_transfer_role;
+            GRANT CREATE STAGE ON SCHEMA staging_db.stages TO ROLE data_transfer_role;
+            
+            USE staging_db;
+            USE SCHEMA cybersyn;
+
+            CREATE OR REPLACE FILE FORMAT parquet_unload_file_format
+                TYPE = 'PARQUET'
+                SNAPPY_COMPRESSION = TRUE
+                COMMENT = 'FILE FORMAT FOR UNLOADING AS PARQUET FILES';
+  
+            CREATE OR REPLACE STAGE parquet_unload_stage
+                FILE_FORMAT = parquet_unload_file_format
+                COMMENT = 'Stage for the Snowflake external Parquet export';
         """
     )
 
@@ -89,5 +121,5 @@ with DAG(
     # Define task dependencies
 
     for batch_task in batch_tasks:
-        create_staging_db >> load_contributor_index >> load_relationships >> batch_task
+        create_staging_db >> create_snowflake_stage >> load_contributor_index >> load_relationships >> batch_task
 
