@@ -100,6 +100,23 @@ By answering these questions, the patent-analytics-pipeline project intends to p
    - Clone this repository.
    - Set up your AWS environment. Configure your AWS CLI with aws configure. Ensure you have the necessary permissions for S3, Glue, Lambda, and EMR.
    - Change directory to `/infra`
+   - Add the required terraform env variables, for example my local env variables :
+
+   ```
+   export TF_VAR_region='us-east-1'
+   export TF_VAR_account_id='<your aws account ID>'
+   export TF_VAR_environment_name='dev'
+   export TF_VAR_my_ip='<your machine IP address>'
+   export TF_VAR_public_key_path='~/.ssh/patentkey.pub' 
+   export TF_VAR_raw_patent_data_bucket_name='<s3 bucket name for raw patent data>' 
+   export TF_VAR_mwaa_source_bucket_name='<s3 bucket name for mwaa dags>'
+   export TF_VAR_mwaa_source_bucket_arn='arn:aws:s3:::<s3 bucket name for mwaa dags>'
+   export TF_VAR_vpc_cidr='10.16.0.0/16'
+   export TF_VAR_private_subnet_cidrs='["10.16.1.0/24","10.16.2.0/24"]'
+   export TF_VAR_public_subnet_cidrs='["10.16.3.0/24","10.16.4.0/24"]'
+   export TF_VAR_source_bucket_arn=""
+
+   ```
    - Run `terraform init`
    - Run `terraform apply`
 3. **Data Exploration in Snowflake**
