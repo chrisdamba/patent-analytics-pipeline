@@ -43,13 +43,39 @@ The pipeline also enables an in-depth analysis of a specific technology area usi
 
 By answering these questions, the patent-analytics-pipeline project intends to provide a comprehensive overview of the innovation landscape as reflected in patent filings, offering valuable insights for businesses, researchers, and policymakers to make informed decisions and strategize accordingly.
 
-## Features
+## Project Workflow
 
-- Weekly batch processing of US Patent Grants data from Snowflake
-- Data storage and cataloging with AWS S3 and Glue
-- Scalable data processing using Apache Spark on Amazon EMR
-- Analysis and querying capabilities with Snowflake
-- Interactive dashboards and visualizations via Metabase
+### 1. Data Ingestion
+
+- **Source**: The dataset is available at Snowflake, with updates every Tuesday.
+- **Batch Processing Approach**: Given the update frequency, we set up a weekly batch ingestion pipeline to fetch new data.
+
+### 2. Cloud Platform: AWS
+
+- **S3 Bucket**: We use AWS S3 as the primary data lake to store raw patent data. S3 is scalable, durable, and secure, making it ideal for storing large datasets.
+- **IAM Roles and Policies**: We ensure that appropriate IAM roles and policies are in place for secure access to AWS resources.
+
+### 3. Infrastructure as Code: Terraform
+
+- **Resource Management**: We define the AWS infrastructure with Terraform, including S3 buckets, AWS Glue Data Catalog, AWS Lambda functions, and Amazon EMR clusters. This approach facilitates reproducibility, scalability, and version control of your cloud infrastructure.
+
+### 4. Workflow Orchestration: Airflow
+
+- **DAGs for Batch Jobs**: We create Directed Acyclic Graphs (DAGs) in Airflow to manage the workflow of our batch jobs. This includes tasks for data ingestion, processing, and loading into the data warehouse.
+- **Scheduling**: We schedule the DAG to run weekly, in alignment with the dataset update frequency.
+
+### 5. Data Processing and Analysis
+
+- **AWS Glue**: We use AWS Glue for ETL (extract, transform, load) jobs. We define Glue crawlers to catalog the data in S3 and prepare it for analysis.
+- **Apache Spark on Amazon EMR**: For data processing and transformation, we leverage Apache Spark running on Amazon EMR. Spark's distributed computing capability is well-suited for processing large datasets efficiently.
+- **Data Warehouse (Snowflake)**: We load the processed data into Snowflake for further analysis and querying. Snowflake's scalability and performance make it an excellent choice for data analytics workloads.
+
+### 6. Dashboard Visualization: Metabase
+
+- **Metabase Setup**: We set up Metabase on an AWS EC2 instance. We then connect Metabase to the Snowflake data warehouse.
+- **Visualization**:
+  - **Categorical Data Distribution Graph**: We create a dashboard in Metabase to display the distribution of patents across different technology sectors.
+  - **Temporal Distribution Graph**: We design a time series chart in Metabase to show the number of patents filed over time, possibly segmented by technology sector.
 
 ## Getting Started
 
