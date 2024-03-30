@@ -33,11 +33,6 @@ variable "public_key_path" {
   type        = string
 }
 
-variable "bucket_name" {
-  type        = string
-  description = "Name of the bucket for raw data storage"
-}
-
 variable "public_subnet_cidrs" {
   description = "CIDR blocks for the public subnets MWAA uses. Must be at least 2 if create_networking_config=true"
   type        = list(string)

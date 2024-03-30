@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
 from airflow.operators.python_operator import PythonOperator
-from datetime import datetime
+from airflow.utils.dates import days_ago
 
 
 def incremental_load(ds, **kwargs):
@@ -38,6 +38,7 @@ with DAG(
         'incremental_load_uspto_patent_index',
         description='DAG for incremental load of USPTO Patent Index data',
         schedule_interval='0 0 * * 2',  # At 00:00 on Tuesday
+        start_date=days_ago(1),  # Specify a start date in the past
         catchup=False
 ) as dag:
 

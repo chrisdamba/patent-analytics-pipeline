@@ -4,7 +4,9 @@ apache-airflow-providers-amazon
 lxml
 openpyxl
 pandas
+pyarrow
 requests
 snowflake-sqlalchemy
 snowflake-connector-python
 urllib3
+awswrangler

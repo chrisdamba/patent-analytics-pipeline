@@ -139,3 +139,43 @@ data "aws_iam_policy_document" "mwaa_iam" {
     var.additional_execution_role_policy_document_json
   ]
 }
+
+data "aws_iam_policy_document" "snowflake_patent_grant_assume" {
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+    principals {
+      identifiers = [
+        "s3.amazonaws.com"
+      ]
+      type = "Service"
+    }
+    actions = [
+      "sts:AssumeRole"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "snowflake_patent_grant_base" {
+  version = "2012-10-17"
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:ListBucket",
+      "s3:GetObject",
+      "s3:PutObject",
+      "s3:DeleteObject"
+    ]
+    resources = [
+      "arn:aws:s3:::${var.raw_patent_data_bucket_name}",
+      "arn:aws:s3:::${var.raw_patent_data_bucket_name}/*"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "snowflake_patent_grant_iam" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.snowflake_patent_grant_base.json,
+    var.additional_execution_role_policy_document_json
+  ]
+}

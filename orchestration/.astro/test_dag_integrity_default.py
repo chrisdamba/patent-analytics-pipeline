@@ -10,7 +10,7 @@ from airflow.models import DagBag, Variable, Connection
 from airflow.hooks.base import BaseHook
 from airflow.utils.db import initdb
 
-# init airflow database
+# init orchestration database
 initdb()
 
 # The following code patches errors caused by missing OS Variables, Airflow Connections, and Airflow Variables
@@ -102,7 +102,7 @@ def get_import_errors():
     """
     Generate a tuple for import errors in the dag bag, and include DAGs without errors.
     """
-    with suppress_logging("airflow"):
+    with suppress_logging("orchestration"):
         dag_bag = DagBag(include_examples=False)
 
         def strip_path_prefix(path):
